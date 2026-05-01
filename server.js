@@ -16,7 +16,7 @@ app.use(express.json());
 
 
 app.get("/", (req, res) => {
-    console.log("Habit Tracker Backend is running!"))
+    console.log("Habit Tracker Backend is running!")
     res.send("Habit Tracker Backend is running!");
 });
 
