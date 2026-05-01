@@ -14,8 +14,9 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// Add a root route so the health check or browser visit shows it's working
+
 app.get("/", (req, res) => {
+    console.log("Habit Tracker Backend is running!"))
     res.send("Habit Tracker Backend is running!");
 });
 
