@@ -1,34 +1,30 @@
 export function calculateStreak(logs) {
-  
-  const completedDates = new Set(
+  // 1. Get all unique completed dates and sort them newest to oldest
+  const completedDates = [...new Set(
     logs
       .filter(log => log.completed)
       .map(log => log.date)
-  );
+  )].sort().reverse();
 
-  let streak = 0;
-  const today = new Date();
+  if (completedDates.length === 0) return 0;
 
-  for (let i = 0; i < 365; i++) {
-    const date = new Date(today);
-    date.setDate(today.getDate() - i);
+  let streak = 1;
+
+  for (let i = 0; i < completedDates.length - 1; i++) {
+    const current = new Date(completedDates[i]);
+    const next = new Date(completedDates[i+1]);
     
-    // Generate YYYY-MM-DD in "local" time (relative to the server/user)
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const dateStr = `${year}-${month}-${day}`;
 
-    if (completedDates.has(dateStr)) {
+    const diff = (current - next) / (1000 * 60 * 60 * 24);
+    
+    if (Math.round(diff) === 1) {
       streak++;
+    } else if (Math.round(diff) === 0) {
+      continue; // Skip same-day logs if they exist
     } else {
-      // If we miss today (i=0), we should check if we have yesterday to keep the streak alive.
-      // But if we miss any day after that, the streak is broken.
-      if (i === 0) continue; 
-      break; 
+      break; // Gap detected, streak broken
     }
   }
-
+  
   return streak;
 }
-
