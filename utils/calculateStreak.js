@@ -15,14 +15,7 @@ export function calculateStreak(logs) {
   const day = String(today.getDate()).padStart(2, '0');
   const todayStr = `${year}-${month}-${day}`;
 
-  const yesterday = new Date(today);
-  yesterday.setDate(yesterday.getDate() - 1);
-  const yestYear = yesterday.getFullYear();
-  const yestMonth = String(yesterday.getMonth() + 1).padStart(2, '0');
-  const yestDay = String(yesterday.getDate()).padStart(2, '0');
-  const yesterdayStr = `${yestYear}-${yestMonth}-${yestDay}`;
-
-  if (completedDates[0] !== todayStr && completedDates[0] !== yesterdayStr) {
+  if (completedDates[0] !== todayStr) {
     return 0;
   }
 
