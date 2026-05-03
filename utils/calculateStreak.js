@@ -8,6 +8,24 @@ export function calculateStreak(logs) {
 
   if (completedDates.length === 0) return 0;
 
+  // 1. Check if the streak is still active (latest log must be today or yesterday)
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+  const todayStr = `${year}-${month}-${day}`;
+
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yestYear = yesterday.getFullYear();
+  const yestMonth = String(yesterday.getMonth() + 1).padStart(2, '0');
+  const yestDay = String(yesterday.getDate()).padStart(2, '0');
+  const yesterdayStr = `${yestYear}-${yestMonth}-${yestDay}`;
+
+  if (completedDates[0] !== todayStr && completedDates[0] !== yesterdayStr) {
+    return 0;
+  }
+
   let streak = 1;
 
   for (let i = 0; i < completedDates.length - 1; i++) {
@@ -20,9 +38,9 @@ export function calculateStreak(logs) {
     if (Math.round(diff) === 1) {
       streak++;
     } else if (Math.round(diff) === 0) {
-      continue; // Skip same-day logs if they exist
+      continue; 
     } else {
-      break; // Gap detected, streak broken
+      break; 
     }
   }
   
